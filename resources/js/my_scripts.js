@@ -137,26 +137,57 @@ function loadStatsPage() {
 					  avg_rec_yards - the average number of receiving yards for the player's Buff career
 */
 
-function switchPlayers(playerNum) {
-	var list = document.getElementById("player_selector");
 
-
-}
 
 function loadPlayersPage() {
 	var list = document.getElementById("player_selector");
 	for (i = 0; i < players.length; i++) {
-		var el = document.createElement("option");
-		
-		// el.href = "#";
-		el.textContent = players[i].name;
-		el.value = players[i];
-		// el.onclick = switchPlayers(players[i].name);
-		list.appendChild(el);
-		
-		console.log(i);
+		var link = document.createElement('a');
+		link.setAttribute('href', '#');
+		link.onclick = function () {
+			for (j = 0; j < players.length; j++) {
+				if (players[j].name == this.innerText) break;
+			}
+			switchPlayers(j)
+		};
+		link.appendChild(document.createTextNode(players[i].name));
+		var thisLI = document.createElement('li');
+		thisLI.appendChild(link);
+		list.append(thisLI);
 	}
 }
 
+function switchPlayers(playerNum) {
+	var player = players[playerNum];
+	var year = 0;
+	switch (player.year) {
+		case "Freshman":
+			year = 1;
+			break;
+		case "Sophomore":
+			year = 2;
+			break;
+		case "Junior":
+			year = 3;
+			break;
+		case "Senior":
+			year = 4;
+			break;
+		default:
+			year = 0;
 
+	}
+	document.getElementById("p_year").innerHTML = player.year;
+	document.getElementById("p_major").innerHTML = player.major;
+	document.getElementById("g_played").innerHTML = player.games_played;
+	document.getElementById("p_yards").innerHTML = player.pass_yards;
+	document.getElementById("r_yards").innerHTML = player.rushing_yards;
+	document.getElementById("rec_yards").innerHTML = player.receiving_yards
+	document.getElementById("avg_p_yards").innerHTML = player.pass_yards / year;
+	document.getElementById("avg_r_yards").innerHTML = player.rushing_yards / year;
+	document.getElementById("avg_rec_yards").innerHTML = player.receiving_yards / year;
+	document.getElementById("player_img").src = player.img;
+	document.getElementById("player_img").alt = player.alt;
+	document.getElementById("selectPlayerButton").innerText = player.name;
+}
 
